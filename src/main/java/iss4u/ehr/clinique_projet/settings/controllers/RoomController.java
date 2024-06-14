@@ -50,11 +50,10 @@ public class RoomController {
     }
 
     //Méthode pour récupérer les salles associées à un groupe de salles enregistrées dans la base de donnéesde filtrer les salles par libellé et type.
-    @GetMapping("/roomGroups/{roomGroupId}/rooms")
-    public ResponseEntity<List<Room>> getRoomsByRoomGroupWithFilters(
-            @PathVariable("roomGroupId") long iRoomGroup_Ky,
-            @RequestParam(value = "libelle", required = false) String libelle,  // (optionnel) Le libellé des salles à filtrer
-            @RequestParam(value = "type", required = false) String type) {     //(optionnel) Le type des salles à filtrer.
+    @GetMapping("/roomGroups/{roomGroupId}")
+    public ResponseEntity<List<Room>> getRoomsByRoomGroup(
+            @PathVariable("roomGroupId") long iRoomGroup_Ky)
+          {
 
         // Récupérer les salles associées à un groupe de salles par son ID
         List<Room> aRooms = roomGroupService.findRoomGroupById(iRoomGroup_Ky).getRooms();

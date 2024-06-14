@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins=("*"))
 
 public class SiteGroupController {
-
 	@Autowired
-private SiteGroupService siteGroupService;
+	private SiteGroupService siteGroupService;
 	
 	public SiteGroupController(SiteGroupService iService) {
 			this.siteGroupService = iService;

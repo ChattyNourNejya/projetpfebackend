@@ -132,8 +132,7 @@ public class PatientServiceImpl implements PatientService {
         updatedPatient.setPatientNationality(patient.getPatientNationality());
         updatedPatient.setPatientDeathDate(patient.getPatientDeathDate());
         updatedPatient.setPatientDeathRemarks(patient.getPatientDeathRemarks());
-        updatedPatient.setPatientSize(patient.getPatientSize());
-        updatedPatient.setPatientWeight(patient.getPatientWeight());
+
         updatedPatient.setPatientRemarks(patient.getPatientRemarks());
         updatedPatient.setPatientStatus(patient.getPatientStatus());
 

@@ -60,15 +60,15 @@ public class StaffController {
     }
 
 
-   /*@GetMapping("/byname/{staffName}") // Unique path to avoid conflicts
-    public ResponseEntity<Staff> getStaffByName(@PathVariable String Staff_Nm) {
-        Staff staff = service.findStaffByName(Staff_Nm);
+    @GetMapping("/byname/{staffName}") // Unique path to avoid conflicts
+    public ResponseEntity<Staff> getStaffByName(@PathVariable String staffName) {
+        Staff staff = service.findStaffByName(staffName);
         if (staff != null) {
             return ResponseEntity.ok(staff);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }*/
+    }
 
 
     @PutMapping("/{Staff_Ky}")

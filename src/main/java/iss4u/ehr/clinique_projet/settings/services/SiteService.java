@@ -5,18 +5,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import iss4u.ehr.clinique_projet.settings.entities.Servicee;
+import iss4u.ehr.clinique_projet.settings.entities.LeService;
 import iss4u.ehr.clinique_projet.settings.entities.Site;
 import iss4u.ehr.clinique_projet.settings.entities.Staff;
 import iss4u.ehr.clinique_projet.settings.repositories.SiteRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-
+import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
@@ -57,7 +53,7 @@ public class SiteService {
 
 
 	//fonction pour ajouter un service dans un site
-	public Servicee addServiceToSite(int iServiceId, Servicee newService) {
+	public LeService addServiceToSite(int iServiceId, LeService newService) {
 		Optional<Site> aSiteOptional = siteRepository.findById(iServiceId);
 
 		if (aSiteOptional.isPresent()) {
@@ -89,7 +85,7 @@ public class SiteService {
 
 
 	//fonction pour récupérer les services ajouté par un site
-	public List<Servicee> getServiceBySite(int iSiteId) {
+	public List<LeService> getServiceBySite(int iSiteId) {
 		if (iSiteId <= 0) { throw new IllegalArgumentException("Site ID must be positive."); }
 		Optional<Site> aSiteOptional = siteRepository.findById(iSiteId);
 

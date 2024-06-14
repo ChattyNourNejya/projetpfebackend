@@ -1,7 +1,7 @@
 package iss4u.ehr.clinique_projet.stay.services;
 
 
-import iss4u.ehr.clinique_projet.settings.entities.Servicee;
+import iss4u.ehr.clinique_projet.settings.entities.LeService;
 import iss4u.ehr.clinique_projet.stay.entities.Stay;
 
 import java.util.List;
@@ -17,5 +17,5 @@ public interface StayService {
 
     public List<Stay> getStayByPatient(int Patient_Id);
 
-    public Servicee addServiceToStay(int iServiceId, Servicee newService);
+    public LeService addServiceToStay(int iServiceId, LeService newService);
 }

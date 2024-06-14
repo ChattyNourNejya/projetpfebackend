@@ -3,7 +3,7 @@ package iss4u.ehr.clinique_projet.settings.services;
 
 import iss4u.ehr.clinique_projet.exception.UserNotFoundException;
 import iss4u.ehr.clinique_projet.settings.entities.Staff;
-import iss4u.ehr.clinique_projet.settings.repositories.StaffGroupRepository;
+import iss4u.ehr.clinique_projet.settings.entities.Stafff_Status;
 import iss4u.ehr.clinique_projet.settings.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,8 @@ import java.util.Optional;
 public class StaffManagement  {
     @Autowired
     private StaffRepository staffRepository;
-    
-    @Autowired
-    private StaffGroupRepository staffGroupRepository;
+
+	private Stafff_Status staff_status;
 
 	
 	public Staff addStaff(Staff aStaff) {
@@ -54,7 +53,7 @@ public class StaffManagement  {
 	public Staff enableStaff (int aStaff_Ky) {
 		System.out.println("Staff enabled successfully");
 		Staff staff= staffRepository.findById(aStaff_Ky).orElseThrow(()->new UserNotFoundException(aStaff_Ky +"Not Found"));
-		staff.setStaff_status(true);
+		staff.setStaff_status(Stafff_Status.Available);
 		return staffRepository.save(staff);
 
 	}
@@ -62,7 +61,7 @@ public class StaffManagement  {
     	public Staff disableStaff (int aStaff_Ky) {
 		System.out.println("Staff disable successfully");
 		Staff staff= staffRepository.findById(aStaff_Ky).orElseThrow(()->new UserNotFoundException(aStaff_Ky +"Not Found"));
-		staff.setStaff_status(false);
+			staff.setStaff_status(Stafff_Status.Unavaible);
 		return staffRepository.save(staff);
 
 	}
@@ -77,5 +76,7 @@ public class StaffManagement  {
     }
 
 
-	
+    public Staff findStaffByName(String staffName) {
+		return staffRepository.findByStaff_Nm(staffName);
+    }
 }

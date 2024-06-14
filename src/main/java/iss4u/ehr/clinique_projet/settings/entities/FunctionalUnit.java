@@ -1,25 +1,33 @@
 package iss4u.ehr.clinique_projet.settings.entities;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.ToString;
 
+import jakarta.persistence.*;
 import java.util.List;
 
 
 @Data
 @Entity
+@ToString
 public class FunctionalUnit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long FunctionalUnit_Ky;
     private int FunctionalUnit_PrntKy;
+
+
+
     private String FunctionalUnit_Nm;
 
     @OneToMany(mappedBy = "functionalUnit", cascade = CascadeType.ALL)
     private List<RoomGroup> roomList;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "serviceZoneFunctinalUnit")
+
     private ServiceZone serviceZone;
 
 

@@ -1,22 +1,19 @@
 package iss4u.ehr.clinique_projet.settings.controllers;
 
 
-import iss4u.ehr.clinique_projet.settings.entities.Servicee;
+import iss4u.ehr.clinique_projet.settings.entities.LeService;
 import iss4u.ehr.clinique_projet.settings.entities.Site;
 import iss4u.ehr.clinique_projet.settings.entities.Staff;
 import iss4u.ehr.clinique_projet.settings.services.SiteGroupService;
 import iss4u.ehr.clinique_projet.settings.services.SiteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,9 +83,9 @@ public class SiteController {
 
 	//routage pour l'ajout d un service dans un site
 	@PostMapping("/{iSiteId}/addService")
-	public ResponseEntity<Servicee> addServiceToSite(@PathVariable int iSiteId, @RequestBody Servicee newService) {
+	public ResponseEntity<LeService> addServiceToSite(@PathVariable int iSiteId, @RequestBody LeService newService) {
 		try {
-			Servicee aServiceAdded = siteService.addServiceToSite(iSiteId, newService);
+			LeService aServiceAdded = siteService.addServiceToSite(iSiteId, newService);
 			return new ResponseEntity<>(aServiceAdded, HttpStatus.CREATED);
 		}
 		catch (Exception e) {

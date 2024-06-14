@@ -1,11 +1,20 @@
 package iss4u.ehr.clinique_projet.settings.entities;
 
-import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import iss4u.ehr.clinique_projet.appointment.entities.MedVisitSchdld;
+import lombok.Getter;
+import lombok.Setter;
+
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+@Setter
+@Getter
 @Entity
 public class Staff {
 	@Id
@@ -13,27 +22,50 @@ public class Staff {
 	private int Staff_Ky;
 	private String Staff_Nm ;
 	private String Staff_FrstNm ;
-	private String Staff_UsrId ;
-	private String Staff_Color ;
-	private Boolean Staff_status;
+
+	private Stafff_Status Staff_status;
+
+	@OneToOne
+	@JoinColumn(name = "medVisitSchdld_id", nullable = false)
+	@JsonManagedReference("medVisitSchdld-staff")
+	private MedVisitSchdld medVisitSchdld;
+
+	@Enumerated(EnumType.STRING)
+	private StaffRole StaffJob;
+
+	public MedVisitSchdld getMedVisitSchdld() {
+		return medVisitSchdld;
+	}
+
+	public void setMedVisitSchdld(MedVisitSchdld medVisitSchdld) {
+		this.medVisitSchdld = medVisitSchdld;
+		if (medVisitSchdld != null) {
+			medVisitSchdld.setStaff(this);
+		}
+	}
 	@ManyToOne
 	private Site site ;
 
-	@ManyToMany
-	@JoinTable(
-	    name = "StaffGroupLnk",
-	    joinColumns = @JoinColumn(name = "StaffGroupLnk_PrntStaffGroup"),
-	    inverseJoinColumns = @JoinColumn(name = "StaffGroupLnk_PrntStaff")
-	)
+	@ManyToOne
+	@JoinColumn(name = "service_id")
+	@JsonBackReference(value = "serviceStaff")
+	private LeService leService;
 
-    private Set<StaffGroup> groups = new HashSet<>();
 
-	public Set<StaffGroup> getGroups() {
-		return groups;
+
+
+	public Site getSite() {
+		return site;
 	}
-	public void setGroups(Set<StaffGroup> groups) {
-		this.groups = groups;
+
+	public void setSite(Site site) {
+		this.site = site;
 	}
+
+
+
+
+
 	public int getStaff_Ky() {
 		return Staff_Ky;
 	}
@@ -52,18 +84,15 @@ public class Staff {
 	public void setStaff_FrstNm(String staff_FrstNm) {
 		Staff_FrstNm = staff_FrstNm;
 	}
-	public String getStaff_UsrId() {
-		return Staff_UsrId;
+
+	public LeService getLeService() {
+		return leService;
 	}
-	public void setStaff_UsrId(String staff_UsrId) {
-		Staff_UsrId = staff_UsrId;
+
+	public void setLeService(LeService leService) {
+		this.leService = leService;
 	}
-	public String getStaff_Color() {
-		return Staff_Color;
-	}
-	public void setStaff_Color(String staff_Color) {
-		Staff_Color = staff_Color;
-	}
+
 	public Site getStaff_PrntKy() {
 		return site;
 	}
@@ -71,29 +100,39 @@ public class Staff {
 		this.site = site;
 	}
 
-	public Boolean getStaff_status() {
+
+	public Stafff_Status getStaff_status() {
 		return Staff_status;
 	}
 
-	public void setStaff_status(Boolean staff_status) {
+	public void setStaff_status(Stafff_Status staff_status) {
 		Staff_status = staff_status;
+	}
+
+	public StaffRole getStaffJob() {
+		return StaffJob;
+	}
+
+	public void setStaffJob(StaffRole staffJob) {
+		StaffJob = staffJob;
 	}
 
 	public Staff() {
 		super();
 
 	}
-	public Staff(int staff_Ky, String staff_Nm, String staff_FrstNm, String staff_UsrId, String staff_Color,
-			Site site, List<StaffGroup> staffgroup, Boolean staff_status) {
-		super();
-		this.Staff_Ky = staff_Ky;
-		this.Staff_Nm = staff_Nm;
-		this.Staff_FrstNm = staff_FrstNm;
-		this.Staff_UsrId = staff_UsrId;
-		this.Staff_Color = staff_Color;
-		this.site = site;
-		this.Staff_status= staff_status;
-	}
 
-	
+
+	@Override
+	public String toString() {
+		return "Staff{" +
+				"Staff_Ky=" + Staff_Ky +
+				", Staff_Nm='" + Staff_Nm + '\'' +
+				", Staff_FrstNm='" + Staff_FrstNm + '\'' +
+				", Staff_status=" + Staff_status +
+				", site=" + site +
+				", Service=" + leService +
+				", staffjob=" + StaffJob +
+				'}';
+	}
 }

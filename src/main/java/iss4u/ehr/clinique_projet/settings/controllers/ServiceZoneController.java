@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServiceZoneController {
 
 	@Autowired
-private ServiceZoneService serviceZoneService;
+	private ServiceZoneService serviceZoneService;
 
 	@Autowired
-	private ServicePlannerService servicesService;
+	private ServicePlannerService serviceService;
 
 	public ServiceZoneController(ServicePlannerService iServicesService) {
-		this.servicesService = iServicesService;
+		this.serviceService = iServicesService;
 	}
 	public ServiceZoneController() {
 
@@ -126,11 +126,11 @@ private ServiceZoneService serviceZoneService;
     }
 
 	//routage pour récuperer les serviceZone d'un service
-	@GetMapping("/serviceZone-by-service/{iServiceId}")
+		@GetMapping("/serviceZone-by-service/{iServiceId}")
 	public ResponseEntity<List<ServiceZone>> getServiceZoneByService(@PathVariable int iServiceId) {
 		try {
 			if (iServiceId<= 0) { throw new IllegalArgumentException("Service ID must be positive."); }
-			List<ServiceZone> aServiceZoneList = servicesService.getServiceZoneByService(iServiceId);
+			List<ServiceZone> aServiceZoneList = serviceService.getServiceZoneByService(iServiceId);
 
 			return new ResponseEntity<>(aServiceZoneList, HttpStatus.OK);
 		}

@@ -6,11 +6,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
+
 @Entity
 public class SiteGroup {
 	
 	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int SiteGroup_ky ;
 	private String SiteGroup_Nm;
 	
@@ -63,8 +64,15 @@ public class SiteGroup {
 	public void setSiteGroup_Nm(String siteGroup_Nm) {
 		SiteGroup_Nm = siteGroup_Nm;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "SiteGroup{" +
+				"SiteGroup_ky=" + SiteGroup_ky +
+				", SiteGroup_Nm='" + SiteGroup_Nm + '\'' +
+
+				'}';
+	}
 	
 	
 

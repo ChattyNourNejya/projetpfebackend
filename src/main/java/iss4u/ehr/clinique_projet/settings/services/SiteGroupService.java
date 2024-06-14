@@ -8,11 +8,10 @@ import
 
 import iss4u.ehr.clinique_projet.settings.entities.SiteGroup;
 import iss4u.ehr.clinique_projet.settings.repositories.SiteGroupRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import jakarta.persistence.EntityNotFoundException;
 
 
 @Service

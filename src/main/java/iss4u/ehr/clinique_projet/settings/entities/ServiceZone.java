@@ -3,46 +3,52 @@ package iss4u.ehr.clinique_projet.settings.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import iss4u.ehr.clinique_projet.settings.entities.FunctionalUnit;
-import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 public class ServiceZone {
-	
+
 	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int ServiceZone_ky ;
 	private String ServiceZone_Nm ;
 
-	@JsonBackReference
-	@ManyToOne
-	private Servicee service;
+	@JsonBackReference(value = "serviceServiceZone")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private LeService Leservice;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "serviceZone", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "serviceZone",  fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference(value = "serviceZoneFunctinalUnit")
 	private List<FunctionalUnit> functionalUnits;
 
-	public ServiceZone(int serviceZone_ky, String serviceZone_Nm, Servicee service) {
+	public ServiceZone(int serviceZone_ky, String serviceZone_Nm, LeService Leservice) {
 		super();
 		ServiceZone_ky = serviceZone_ky;
 		ServiceZone_Nm = serviceZone_Nm;
-		this.service = service;
+		this.Leservice = Leservice;
 	}
 
 	public ServiceZone() {
 		super();
 	}
-	
-	
 
-	public Servicee getService() {
-		return service;
+
+
+	public LeService getService() {
+		return Leservice;
 	}
 
-	public void setService(Servicee service) {
-		this.service = service;
+	public void setService(LeService Leservice) {
+		this.Leservice = Leservice;
 	}
 
 	public int getServiceZone_ky() {
@@ -68,7 +74,6 @@ public class ServiceZone {
 		return "ServiceZone{" +
 				"ServiceZone_ky=" + ServiceZone_ky +
 				", ServiceZone_Nm='" + ServiceZone_Nm + '\'' +
-				", service=" + service +
 				'}';
 	}
 
@@ -81,6 +86,9 @@ public class ServiceZone {
 	public void setFunctionalUnits(List<FunctionalUnit> functionalUnits) {
 		this.functionalUnits = functionalUnits;
 	}
+
+
+
 }
 
 

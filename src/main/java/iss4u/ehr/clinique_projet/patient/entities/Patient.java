@@ -1,6 +1,7 @@
 package iss4u.ehr.clinique_projet.patient.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import iss4u.ehr.clinique_projet.appointment.entities.MedVisitSchdld;
 import iss4u.ehr.clinique_projet.stay.entities.Stay;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,7 +48,7 @@ public class Patient  {
     private IdentityType patientIdentityType;
 
     @Column(name = "Patient_Nationality")
-    private Nationality patientNationality;
+    private String patientNationality;
 
     @Column(name = "Patient_DeathDate")
     private Date patientDeathDate;
@@ -55,11 +56,7 @@ public class Patient  {
     @Column(name = "Patient_DeathRemarks")
     private String patientDeathRemarks;
 
-    @Column(name = "Patient_Size")
-    private int patientSize;
 
-    @Column(name = "Patient_Weight")
-    private int patientWeight;
 
     @Column(name = "Patient_Remarks")
     private String patientRemarks;
@@ -74,6 +71,20 @@ public class Patient  {
     @OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH},fetch = FetchType.LAZY)
     @JsonManagedReference(value = "adressPatient")
     private List<Address> addresses;
+
+    @OneToMany(mappedBy = "MedVisitSchdld_PatientKy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("MedVisitSchdldPatient")
+    private List<MedVisitSchdld> medVisitSchdlds;
+
+
+    public void addMedVisitSchdld(MedVisitSchdld medVisitSchdld) {
+        medVisitSchdlds.add(medVisitSchdld);
+        medVisitSchdld.setMedVisitSchdld_PatientKy(this);
+    }
+
+    public List<MedVisitSchdld> getMedVisitSchdlds() {
+        return medVisitSchdlds;
+    }
 
     @OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH},fetch = FetchType.LAZY)
     @JsonManagedReference(value = "EmailPatient")

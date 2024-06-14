@@ -4,15 +4,15 @@ package iss4u.ehr.clinique_projet.stay.services.implementations;
 
 import iss4u.ehr.clinique_projet.patient.entities.Patient;
 import iss4u.ehr.clinique_projet.patient.services.PatientService;
-import iss4u.ehr.clinique_projet.settings.entities.Servicee;
+import iss4u.ehr.clinique_projet.settings.entities.LeService;
 import iss4u.ehr.clinique_projet.stay.entities.Stay;
 import iss4u.ehr.clinique_projet.stay.repositories.StayRepository;
 import iss4u.ehr.clinique_projet.stay.services.StayService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +53,7 @@ public class StayServiceImpl implements StayService {
     }
 
     @Override
-    public Servicee addServiceToStay(int iServiceId, Servicee newService) {
+    public LeService addServiceToStay(int iServiceId, LeService newService) {
         Optional<Stay> aStayOptional = stayRepository.findById(iServiceId);
 
         if (aStayOptional.isPresent()) {
@@ -77,9 +77,6 @@ public class StayServiceImpl implements StayService {
     @Transactional
     public void deleteStayById(int stayId) {
         Stay stay = stayRepository.findById(stayId).orElse(null);
-
-
-
 
             stayRepository.delete(stay);
 

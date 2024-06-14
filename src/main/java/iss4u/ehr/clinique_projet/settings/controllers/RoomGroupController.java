@@ -108,6 +108,37 @@ public class RoomGroupController {
             return Collections.emptyList(); // Retourner une liste vide en cas d'erreur
         }
     }
+/*
+    @GetMapping("/functionalUnits-by-serviceZone/{serviceZoneKey}")
+    public List<FunctionalUnit> getFunctionalUnitsByServiceZone(@PathVariable int serviceZoneKey) {
+        try {
+            if (serviceZoneKey <= 0) {
+                throw new IllegalArgumentException("Service Zone Key must be positive.");
+            }
+
+            ServiceZone aServiceZone = serviceZoneService.findServiceZoneById(serviceZoneKey).orElse(null);
+
+            return aServiceZone.getFunctionalUnits();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Une erreur s'est produite lors de la récupération des unités fonctionnelles pour la zone de service.", e);
+        }
+    }
+ */
+
+    @GetMapping("/roomGroups/{functionalUnitKey}")
+    public List<RoomGroup> getRoomGroupsByFunctionalUnit(@PathVariable("functionalUnitKey") int ifunctionalUnitKey) {
+        try {
+            // Trouver l'unité fonctionnelle correspondant au id fourni
+            FunctionalUnit aFunctionalUnit = functionalUnitService.findFunctionalUnitById(ifunctionalUnitKey);
+
+            // Récupérer les groupes de salles associés à cette unité fonctionnelle
+            return aFunctionalUnit.getRoomList();
+        } catch (Exception e) {
+            System.err.println("Une erreur s'est produite lors de la recherche des groupes de salles par nom d'unité fonctionnelle : " + e.getMessage());
+            return Collections.emptyList(); // Retourner une liste vide en cas d'erreur
+        }
+    }
 
     @PutMapping("/{RoomGroup_Ky}")
     public ResponseEntity<RoomGroup> updateRoomGroup(@PathVariable("RoomGroup_Ky") long RoomGroup_Ky, @RequestBody RoomGroup roomGroup) {
@@ -134,10 +165,10 @@ public class RoomGroupController {
         }
         try {
             roomGroupService.deleteRoomGroup(RoomGroup_Ky);
-            return ResponseEntity.ok("FunctionalUnit deleted successfully.");
+            return ResponseEntity.ok("RoomGroup deleted successfully.");
         } catch (FunctionalUnitException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to delete FunctionalUnit: " + e.getmessage());
+                    .body("Failed to delete RoomGroup: " + e.getmessage());
         }
     }
 

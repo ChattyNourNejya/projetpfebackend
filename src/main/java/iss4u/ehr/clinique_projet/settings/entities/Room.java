@@ -1,11 +1,14 @@
 package iss4u.ehr.clinique_projet.settings.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
+import jakarta.persistence.*;
 
 @Data
 @Entity
+@ToString
 public class Room {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -82,6 +82,21 @@ public class FunctionalUnitController {
         }
     }
 
+    @GetMapping("/functionalUnits-by-serviceZone/{serviceZoneKey}")
+    public List<FunctionalUnit> getFunctionalUnitsByServiceZone(@PathVariable int serviceZoneKey) {
+        try {
+            if (serviceZoneKey <= 0) {
+                throw new IllegalArgumentException("Service Zone Key must be positive.");
+            }
+
+            ServiceZone aServiceZone = serviceZoneService.findServiceZoneById(serviceZoneKey).orElse(null);
+
+            return aServiceZone.getFunctionalUnits();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Une erreur s'est produite lors de la récupération des unités fonctionnelles pour la zone de service.", e);
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<FunctionalUnit> getFunctionalUnitById(@PathVariable("id") long FunctionalUnit_Ky) {

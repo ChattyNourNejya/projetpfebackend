@@ -5,83 +5,124 @@ import java.util.List;
 import java.util.Optional;
 
 
-import iss4u.ehr.clinique_projet.settings.entities.Servicee;
-import iss4u.ehr.clinique_projet.settings.entities.ServiceZone;
-import iss4u.ehr.clinique_projet.settings.entities.StaffGroup;
-import iss4u.ehr.clinique_projet.settings.repositories.ServiceRepository;
-import jakarta.persistence.EntityNotFoundException;
+import iss4u.ehr.clinique_projet.settings.entities.*;
+import iss4u.ehr.clinique_projet.settings.repositories.LeServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Optional;
+import jakarta.persistence.EntityNotFoundException;
+
 
 
 @org.springframework.stereotype.Service
 public class ServicePlannerService {
-	
+
 	@Autowired
-	ServiceRepository serviceRepository;
-	
-	public Servicee addService(Servicee s) {
-		return serviceRepository.save(s);
+	LeServiceRepository LeserviceRepository;
+
+	@Autowired
+	public ServicePlannerService(LeServiceRepository LeserviceRepository) {
+		this.LeserviceRepository = LeserviceRepository;
 	}
-	
-	public List<Servicee> findAllService(){
-		return serviceRepository.findAll();
+
+
+	public LeService addService(LeService s) {
+		return LeserviceRepository.save(s);
 	}
-	
-	public Optional<Servicee> findServiceById(int id) {
-		 return serviceRepository.findById(id);
+
+	public List<LeService> findAllService(){
+		return LeserviceRepository.findAll();
+	}
+
+	public Optional<LeService> findServiceById(int id) {
+		 return LeserviceRepository.findById(id);
 		}
 
-	public Servicee findServiceByName(String Service_Nm) {
-	    return serviceRepository.findByName(Service_Nm);
+	public LeService findServiceByName(String Service_Nm) {
+	    return LeserviceRepository.findByName(Service_Nm);
 
 	}
-	
-	public Servicee updateService(Servicee s) {
-		return serviceRepository.save(s);
+
+	public LeService updateService(LeService s) {
+		return LeserviceRepository.save(s);
 	}
-	
+
 	public void deleteService(int id) {
-		serviceRepository.deleteById(id);
+		LeserviceRepository.deleteById(id);
 	}
 
 
 	//fonction pour ajouter un serviceZone dans un service
-	public ServiceZone addServiceZoneToService(int iServiceZoneId, ServiceZone newServiceZone) {
-		Optional<Servicee> aServiceOptional = serviceRepository.findById(iServiceZoneId);
+	public ServiceZone addServiceZoneToService(int iServiceId, ServiceZone newServiceZone) {
+		Optional<LeService> aServiceOptional = LeserviceRepository.findById(iServiceId);
 
 		if (aServiceOptional.isPresent()) {
-			Servicee aService = aServiceOptional.get();
+			LeService aService = aServiceOptional.get();
 			aService.addServiceZone(newServiceZone);
-			serviceRepository.save(aService);
+			LeserviceRepository.save(aService);
 
 			return newServiceZone;
 		} else {
-			throw new EntityNotFoundException("SiteGroup not found with id: " + iServiceZoneId);
+			throw new EntityNotFoundException("ServiceZone not found with id: " + iServiceId);
 		}
 	}
-	public StaffGroup addStaffGroupToService(int serviceId, StaffGroup newStaffGroup) {
-		Optional<Servicee> optionalService = serviceRepository.findById(serviceId);
-		if (optionalService.isPresent()) {
-			Servicee service = optionalService.get();
-			service.addStaffGroup(newStaffGroup);
-			serviceRepository.save(service);
+	public Staff addStaffToService(int serviceId, Staff newStaff) {
 
-			return newStaffGroup;
+		Optional<LeService> optionalService = LeserviceRepository.findById(serviceId);
+
+		if (optionalService.isPresent()) {
+			LeService LeService = optionalService.get();
+
+
+			LeserviceRepository.save(LeService);
+			newStaff.setLeService(LeService);
+
+			return newStaff;
 		} else {
-			throw new EntityNotFoundException("StaffGroup not found with id: " + serviceId);
+			throw new EntityNotFoundException("Staff not found with id: " + serviceId);
 		}
 	}
+
+	// Method to add a StayRoom to a service
+	public StayRoom addStayRoomToService(int iServiceId, StayRoom newStayRoom) {
+		Optional<LeService> aServiceOptional = LeserviceRepository.findById(iServiceId);
+
+		if (aServiceOptional.isPresent()) {
+			LeService aService = aServiceOptional.get();
+			aService.addStayRoom(newStayRoom); // Assuming addStayRoom method exists in LeService
+			LeserviceRepository.save(aService);
+
+			return newStayRoom;
+		} else {
+			throw new EntityNotFoundException("Service not found with id: " + iServiceId);
+		}
+	}
+
+	// Method to retrieve StayRooms associated with a service
+	public List<StayRoom> getStayRoomsByService(int iServiceId) {
+		if (iServiceId <= 0) {
+			throw new IllegalArgumentException("Service ID must be positive.");
+		}
+
+		Optional<LeService> aServiceOptional = LeserviceRepository
+				.findById(iServiceId);
+
+		if (aServiceOptional.isPresent()) {
+			LeService leService = aServiceOptional.get();
+			return leService.getStayRooms();
+		}
+
+		return Collections.emptyList();
+	}
+
+
 	//fonction pour récuperer les serviceZones ajouté par un service
 	public List<ServiceZone> getServiceZoneByService(int iServiceId) {
 		if (iServiceId <= 0) { throw new IllegalArgumentException("Service ID must be positive."); }
-		Optional<Servicee> aServiceOptional = serviceRepository.findById(iServiceId);
+		Optional<LeService> aServiceOptional = LeserviceRepository.findById(iServiceId);
 
 		if (aServiceOptional.isPresent()) {
-			Servicee aService = aServiceOptional.get();
-			return aService.getServicezone();
+			LeService LeService = aServiceOptional.get();
+			return LeService.getServicezone();
 		}
 		return Collections.emptyList();
 	}

@@ -1,9 +1,9 @@
 package iss4u.ehr.clinique_projet.settings.controllers;
 
 
-import iss4u.ehr.clinique_projet.settings.entities.StaffGroup;
-import iss4u.ehr.clinique_projet.settings.services.StaffGroupManagement;
+import iss4u.ehr.clinique_projet.settings.entities.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,11 @@ import java.util.List;
 @RequestMapping("staffGroup")
 @CrossOrigin(origins=("*"))
 public class StaffGroupController {
-    
+
+
+
+    @Autowired
+    private StaffGroupManagement staffGroupService;
     private StaffGroupManagement service;
     @Autowired
     public StaffGroupController(StaffGroupManagement service) {
@@ -62,5 +66,18 @@ public class StaffGroupController {
             e.printStackTrace();
         }
 
+    }
+
+    //routage pour l'ajout d un Staff dans un staffGroup
+    @PostMapping("/{iStaffGroupId}/addStaff")
+    public ResponseEntity<Staff> addStaffToGroup(@PathVariable int iStaffGroupId, @RequestBody Staff newStaff) {
+        try {
+            Staff aStaffAdded = staffGroupService.addStaffToGroup(iStaffGroupId,newStaff);
+            return new ResponseEntity<>(aStaffAdded, HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Une erreur s'est produite lors de l'ajout d un staff dans un staffGroup", e);
+        }
     }
 }
